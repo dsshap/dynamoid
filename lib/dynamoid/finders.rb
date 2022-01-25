@@ -150,7 +150,7 @@ module Dynamoid
                   items ? items[table_name] : []
                 end
 
-        if items.size == ids.size || !options[:raise_error]
+        if items.size == ids.size || !options[:raise_error] || !Dynamoid.config.raise_record_not_found
           items ? items.map { |i| from_database(i) } : []
         else
           ids_list = range_key ? ids.map { |pk, sk| "(#{pk},#{sk})" } : ids.map(&:to_s)
@@ -174,7 +174,7 @@ module Dynamoid
 
         if item = Dynamoid.adapter.read(table_name, id, options.slice(:range_key, :consistent_read))
           from_database(item)
-        elsif options[:raise_error]
+        elsif options[:raise_error] && Dynamoid.config.raise_record_not_found
           primary_key = range_key ? "(#{id},#{options[:range_key]})" : id
           message = "Couldn't find #{name} with primary key #{primary_key}"
           raise Errors::RecordNotFound, message

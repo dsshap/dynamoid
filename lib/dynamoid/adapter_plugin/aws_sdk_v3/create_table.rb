@@ -90,7 +90,7 @@ module Dynamoid
         #
         # @param key_schema
         # @option key_schema [Hash] hash_key_schema - eg: {:id => :string}
-        # @option key_schema [Hash] range_key_schema - eg: {:created_at => :number}
+        # @option key_schema [Hash] range_key_schema - eg: {:created => :number}
         # @param [Hash] secondary_indexes
         # @option secondary_indexes [Array<Dynamoid::Indexes::Index>] :local_secondary_indexes
         # @option secondary_indexes [Array<Dynamoid::Indexes::Index>] :global_secondary_indexes
@@ -132,7 +132,7 @@ module Dynamoid
 
         # Builds an attribute definitions based on hash key and range key
         # @param [Hash] hash_key_schema - eg: {:id => :string}
-        # @param [Hash] range_key_schema - eg: {:created_at => :datetime}
+        # @param [Hash] range_key_schema - eg: {:created => :datetime}
         # @return [Array]
         def build_attribute_definitions(hash_key_schema, range_key_schema = nil)
           attrs = []
@@ -225,7 +225,7 @@ module Dynamoid
 
         # Converts hash_key_schema and range_key_schema to aws_key_schema
         # @param [Hash] hash_key_schema eg: {:id => :string}
-        # @param [Hash] range_key_schema eg: {:created_at => :number}
+        # @param [Hash] range_key_schema eg: {:created => :number}
         # @return [Array]
         def aws_key_schema(hash_key_schema, range_key_schema)
           schema = [{

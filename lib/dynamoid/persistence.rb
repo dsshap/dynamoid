@@ -140,7 +140,7 @@ module Dynamoid
       # +import+ is a relatively low-level method and bypasses some
       # mechanisms like callbacks and validation.
       #
-      # It sets timestamp fields +created_at+ and +updated_at+ if they are
+      # It sets timestamp fields +created+ and +updated+ if they are
       # blank. It sets a hash key field as well if it's blank. It expects that
       # the hash key field is +string+ and sets a random UUID value if the field
       # value is blank. All the field values are type casted to the declared
@@ -368,8 +368,8 @@ module Dynamoid
       # Uses efficient low-level +UpdateItem+ operation and does only one HTTP
       # request.
       #
-      # Doesn't run validations and callbacks. Doesn't update +created_at+ and
-      # +updated_at+ as well.
+      # Doesn't run validations and callbacks. Doesn't update +created+ and
+      # +updated+ as well.
       #
       # @param hash_key_value [Scalar value] hash key
       # @param range_key_value [Scalar value] range key (optional)
@@ -396,7 +396,7 @@ module Dynamoid
 
     # Update document timestamps.
     #
-    # Set +updated_at+ attribute to current DateTime.
+    # Set +updated+ attribute to current DateTime.
     #
     #   post.touch
     #
@@ -407,7 +407,7 @@ module Dynamoid
     # @param name [Symbol] attribute name to update (optional)
     def touch(name = nil)
       now = DateTime.now
-      self.updated_at = now
+      self.updated = now
       attributes[name] = now if name
       save
     end
@@ -442,11 +442,11 @@ module Dynamoid
     #   user = User.new(age: -1)
     #   user.save(validate: false) # => true
     #
-    # +save+ by default sets timestamps attributes - +created_at+ and
-    # +updated_at+ when creates new model and updates +updated_at+ attribute
+    # +save+ by default sets timestamps attributes - +created+ and
+    # +updated+ when creates new model and updates +updated+ attribute
     # when update already existing one.
     #
-    # Changing +updated_at+ attribute at updating a model can be skipped with
+    # Changing +updated+ attribute at updating a model can be skipped with
     # +touch: false+ option:
     #
     #   user.save(touch: false)
@@ -603,8 +603,8 @@ module Dynamoid
 
             if Dynamoid::Config.timestamps
               time_now = DateTime.now.in_time_zone(Time.zone)
-              time_now_dumped = Dumping.dump_field(time_now, self.class.attributes[:updated_at])
-              t.set(updated_at: time_now_dumped)
+              time_now_dumped = Dumping.dump_field(time_now, self.class.attributes[:updated])
+              t.set(updated: time_now_dumped)
             end
 
             yield t

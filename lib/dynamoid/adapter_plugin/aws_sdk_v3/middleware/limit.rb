@@ -25,7 +25,7 @@ module Dynamoid
             # being made. We may want to change this behavior, but it affects
             # filtering on data with potentially large gaps.
             # Example:
-            #    User.where('created_at.gte' => 1.day.ago).record_limit(1000)
+            #    User.where('created.gte' => 1.day.ago).record_limit(1000)
             #    Records 1-999 User's that fit criteria
             #    Records 1000-2000 Users's that do not fit criteria
             #    Record 2001 fits criteria

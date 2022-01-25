@@ -1153,7 +1153,7 @@ describe Dynamoid::Criteria::Chain do
           field :type
 
           global_secondary_index hash_key: :type,
-                                 range_key: :created_at,
+                                 range_key: :created,
                                  projected_attributes: :all
         end
         obj = UserWithGSI.create
@@ -1700,9 +1700,9 @@ describe Dynamoid::Criteria::Chain do
     end
 
     it 'casts values to declared field types' do
-      model.create(created_at: '03-04-2020 23:40:00'.to_time)
+      model.create(created: '03-04-2020 23:40:00'.to_time)
 
-      expect(model.pluck(:created_at)).to eq(['03-04-2020 23:40:00'.to_time])
+      expect(model.pluck(:created)).to eq(['03-04-2020 23:40:00'.to_time])
     end
   end
 
@@ -1759,9 +1759,9 @@ describe Dynamoid::Criteria::Chain do
       stored_record = chain.first
       expect(stored_record.attributes[:post_id]).to eq post2.attributes[:post_id]
       # Must use an epsilon to compare timestamps after round-trip: https://github.com/Dynamoid/Dynamoid/issues/2
-      expect(stored_record.attributes[:created_at]).to be_within(ts_epsilon).of(post2.attributes[:created_at])
+      expect(stored_record.attributes[:created]).to be_within(ts_epsilon).of(post2.attributes[:created])
       expect(stored_record.attributes[:posted_at]).to be_within(ts_epsilon).of(post2.attributes[:posted_at])
-      expect(stored_record.attributes[:updated_at]).to be_within(ts_epsilon).of(post2.attributes[:updated_at])
+      expect(stored_record.attributes[:updated]).to be_within(ts_epsilon).of(post2.attributes[:updated])
     end
 
     it 'finds posts with "where" method with "lt" query' do
@@ -1775,9 +1775,9 @@ describe Dynamoid::Criteria::Chain do
       stored_record = chain.first
       expect(stored_record.attributes[:post_id]).to eq post2.attributes[:post_id]
       # Must use an epsilon to compare timestamps after round-trip: https://github.com/Dynamoid/Dynamoid/issues/2
-      expect(stored_record.attributes[:created_at]).to be_within(ts_epsilon).of(post1.attributes[:created_at])
+      expect(stored_record.attributes[:created]).to be_within(ts_epsilon).of(post1.attributes[:created])
       expect(stored_record.attributes[:posted_at]).to be_within(ts_epsilon).of(post1.attributes[:posted_at])
-      expect(stored_record.attributes[:updated_at]).to be_within(ts_epsilon).of(post1.attributes[:updated_at])
+      expect(stored_record.attributes[:updated]).to be_within(ts_epsilon).of(post1.attributes[:updated])
     end
 
     it 'finds posts with "where" method with "between" query' do
@@ -1791,9 +1791,9 @@ describe Dynamoid::Criteria::Chain do
       stored_record = chain.first
       expect(stored_record.attributes[:post_id]).to eq post2.attributes[:post_id]
       # Must use an epsilon to compare timestamps after round-trip: https://github.com/Dynamoid/Dynamoid/issues/2
-      expect(stored_record.attributes[:created_at]).to be_within(ts_epsilon).of(post1.attributes[:created_at])
+      expect(stored_record.attributes[:created]).to be_within(ts_epsilon).of(post1.attributes[:created])
       expect(stored_record.attributes[:posted_at]).to be_within(ts_epsilon).of(post1.attributes[:posted_at])
-      expect(stored_record.attributes[:updated_at]).to be_within(ts_epsilon).of(post1.attributes[:updated_at])
+      expect(stored_record.attributes[:updated]).to be_within(ts_epsilon).of(post1.attributes[:updated])
     end
 
     describe 'batch queries' do

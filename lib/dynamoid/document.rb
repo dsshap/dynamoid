@@ -148,7 +148,7 @@ module Dynamoid
       # It's also possible to specify models not with primary key but with
       # conditions on the attributes (in the +where+ method style):
       #
-      #   User.exists?(age: 20, 'created_at.gt': Time.now - 1.day)
+      #   User.exists?(age: 20, 'created.gt': Time.now - 1.day)
       #
       # @param id_or_conditions [String|Array[String]|Array[Array]|Hash] the primary id of the model, a list of primary ids or a hash with the options to filter from.
       # @return [true|false]

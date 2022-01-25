@@ -784,23 +784,23 @@ describe Dynamoid::Persistence do
         new_class
       end
 
-      it 'sets created_at and updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets created and updated if Config.timestamps=true', config: { timestamps: true } do
         travel 1.hour do
           time_now = Time.now
           obj = klass.create
 
-          expect(obj.created_at.to_i).to eql(time_now.to_i)
-          expect(obj.updated_at.to_i).to eql(time_now.to_i)
+          expect(obj.created.to_i).to eql(time_now.to_i)
+          expect(obj.updated.to_i).to eql(time_now.to_i)
         end
       end
 
-      it 'uses provided values of created_at and updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided values of created and updated if Config.timestamps=true', config: { timestamps: true } do
         travel 1.hour do
-          created_at = updated_at = Time.now
-          obj = klass.create(created_at: created_at, updated_at: updated_at)
+          created = updated = Time.now
+          obj = klass.create(created: created, updated: updated)
 
-          expect(obj.created_at.to_i).to eql(created_at.to_i)
-          expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+          expect(obj.created.to_i).to eql(created.to_i)
+          expect(obj.updated.to_i).to eql(updated.to_i)
         end
       end
 
@@ -945,7 +945,7 @@ describe Dynamoid::Persistence do
     end
 
     describe 'timestamps' do
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         d = document_class.create(name: 'Document#1')
 
         travel 1.hour do
@@ -953,19 +953,19 @@ describe Dynamoid::Persistence do
 
           expect {
             document_class.update!(d.id, name: '[Updated]')
-          }.to change { d.reload.updated_at.to_i }.to(time_now.to_i)
+          }.to change { d.reload.updated.to_i }.to(time_now.to_i)
         end
       end
 
-      it 'uses provided value of updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value of updated if Config.timestamps=true', config: { timestamps: true } do
         d = document_class.create(name: 'Document#1')
 
         travel 1.hour do
-          updated_at = Time.now + 1.hour
+          updated = Time.now + 1.hour
 
           expect {
-            document_class.update!(d.id, name: '[Updated]', updated_at: updated_at)
-          }.to change { d.reload.updated_at.to_i }.to(updated_at.to_i)
+            document_class.update!(d.id, name: '[Updated]', updated: updated)
+          }.to change { d.reload.updated.to_i }.to(updated.to_i)
         end
       end
 
@@ -1076,7 +1076,7 @@ describe Dynamoid::Persistence do
     end
 
     describe 'timestamps' do
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         d = document_class.create(name: 'Document#1')
 
         travel 1.hour do
@@ -1084,19 +1084,19 @@ describe Dynamoid::Persistence do
 
           expect {
             document_class.update(d.id, name: '[Updated]')
-          }.to change { d.reload.updated_at.to_i }.to(time_now.to_i)
+          }.to change { d.reload.updated.to_i }.to(time_now.to_i)
         end
       end
 
-      it 'uses provided value of updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value of updated if Config.timestamps=true', config: { timestamps: true } do
         d = document_class.create(name: 'Document#1')
 
         travel 1.hour do
-          updated_at = Time.now + 1.hour
+          updated = Time.now + 1.hour
 
           expect {
-            document_class.update(d.id, name: '[Updated]', updated_at: updated_at)
-          }.to change { d.reload.updated_at.to_i }.to(updated_at.to_i)
+            document_class.update(d.id, name: '[Updated]', updated: updated)
+          }.to change { d.reload.updated.to_i }.to(updated.to_i)
         end
       end
 
@@ -1232,7 +1232,7 @@ describe Dynamoid::Persistence do
     end
 
     describe 'timestamps' do
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         obj = document_class.create(title: 'Old title')
 
         travel 1.hour do
@@ -1240,19 +1240,19 @@ describe Dynamoid::Persistence do
 
           expect {
             document_class.update_fields(obj.id, title: 'New title')
-          }.to change { obj.reload.updated_at.to_i }.to(time_now.to_i)
+          }.to change { obj.reload.updated.to_i }.to(time_now.to_i)
         end
       end
 
-      it 'uses provided value of updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value of updated if Config.timestamps=true', config: { timestamps: true } do
         obj = document_class.create(title: 'Old title')
 
         travel 1.hour do
-          updated_at = Time.now + 1.hour
+          updated = Time.now + 1.hour
 
           expect {
-            document_class.update_fields(obj.id, title: 'New title', updated_at: updated_at)
-          }.to change { obj.reload.updated_at.to_i }.to(updated_at.to_i)
+            document_class.update_fields(obj.id, title: 'New title', updated: updated)
+          }.to change { obj.reload.updated.to_i }.to(updated.to_i)
         end
       end
 
@@ -1264,13 +1264,13 @@ describe Dynamoid::Persistence do
         end.not_to raise_error
       end
 
-      it 'does not set updated_at if Config.timestamps=true and table timestamps=false', config: { timestamps: true } do
+      it 'does not set updated if Config.timestamps=true and table timestamps=false', config: { timestamps: true } do
         document_class.table timestamps: false
 
         obj = document_class.create(title: 'Old title')
         document_class.update_fields(obj.id, title: 'New title')
 
-        expect(obj.reload.attributes).to_not have_key(:updated_at)
+        expect(obj.reload.attributes).to_not have_key(:updated)
       end
     end
 
@@ -1426,7 +1426,7 @@ describe Dynamoid::Persistence do
     end
 
     describe 'timestamps' do
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         obj = document_class.create(title: 'Old title')
 
         travel 1.hour do
@@ -1434,19 +1434,19 @@ describe Dynamoid::Persistence do
 
           expect {
             document_class.upsert(obj.id, title: 'New title')
-          }.to change { obj.reload.updated_at.to_i }.to(time_now.to_i)
+          }.to change { obj.reload.updated.to_i }.to(time_now.to_i)
         end
       end
 
-      it 'uses provided value of updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value of updated if Config.timestamps=true', config: { timestamps: true } do
         obj = document_class.create(title: 'Old title')
 
         travel 1.hour do
-          updated_at = Time.now + 1.hour
+          updated = Time.now + 1.hour
 
           expect {
-            document_class.upsert(obj.id, title: 'New title', updated_at: updated_at)
-          }.to change { obj.reload.updated_at.to_i }.to(updated_at.to_i)
+            document_class.upsert(obj.id, title: 'New title', updated: updated)
+          }.to change { obj.reload.updated.to_i }.to(updated.to_i)
         end
       end
 
@@ -1458,13 +1458,13 @@ describe Dynamoid::Persistence do
         end.not_to raise_error
       end
 
-      it 'does not set updated_at if Config.timestamps=true and table timestamps=false', config: { timestamps: true } do
+      it 'does not set updated if Config.timestamps=true and table timestamps=false', config: { timestamps: true } do
         document_class.table timestamps: false
 
         obj = document_class.create(title: 'Old title')
         document_class.upsert(obj.id, title: 'New title')
 
-        expect(obj.reload.attributes).to_not have_key(:updated_at)
+        expect(obj.reload.attributes).to_not have_key(:updated)
       end
     end
 
@@ -1584,13 +1584,13 @@ describe Dynamoid::Persistence do
     end
 
     describe 'timestamps' do
-      it 'does not change updated_at', config: { timestamps: true } do
+      it 'does not change updated', config: { timestamps: true } do
         obj = document_class.create!
-        expect(obj.updated_at).to be_present
+        expect(obj.updated).to be_present
 
         expect {
           document_class.inc(obj.id, links_count: 5)
-        }.not_to change { document_class.find(obj.id).updated_at }
+        }.not_to change { document_class.find(obj.id).updated }
       end
     end
 
@@ -1860,30 +1860,30 @@ describe Dynamoid::Persistence do
       end
 
       context 'new record' do
-        it 'sets created_at and updated_at if Config.timestamps=true', config: { timestamps: true } do
+        it 'sets created and updated if Config.timestamps=true', config: { timestamps: true } do
           travel 1.hour do
             time_now = Time.now
             obj = klass.new
             obj.save
 
-            expect(obj.created_at.to_i).to eql(time_now.to_i)
-            expect(obj.updated_at.to_i).to eql(time_now.to_i)
+            expect(obj.created.to_i).to eql(time_now.to_i)
+            expect(obj.updated.to_i).to eql(time_now.to_i)
           end
         end
 
-        it 'uses provided values of created_at and of updated_at if Config.timestamps=true', config: { timestamps: true } do
+        it 'uses provided values of created and of updated if Config.timestamps=true', config: { timestamps: true } do
           travel 1.hour do
-            created_at = updated_at = Time.now
-            obj = klass.new(created_at: created_at, updated_at: updated_at)
+            created = updated = Time.now
+            obj = klass.new(created: created, updated: updated)
             obj.save
 
-            expect(obj.created_at.to_i).to eql(created_at.to_i)
-            expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+            expect(obj.created.to_i).to eql(created.to_i)
+            expect(obj.updated.to_i).to eql(updated.to_i)
           end
         end
 
         it 'does not raise error if Config.timestamps=false', config: { timestamps: false } do
-          created_at = updated_at = Time.now
+          created = updated = Time.now
           obj = klass.new
 
           expect { obj.save }.not_to raise_error
@@ -1891,18 +1891,18 @@ describe Dynamoid::Persistence do
       end
 
       context 'persisted record' do
-        it 'does not change created_at if Config.timestamps=true', config: { timestamps: true } do
+        it 'does not change created if Config.timestamps=true', config: { timestamps: true } do
           obj = klass.create(title: 'Old title')
 
           travel 1.hour do
             expect do
               obj.title = 'New title'
               obj.save
-            end.not_to change { obj.created_at.to_s }
+            end.not_to change { obj.created.to_s }
           end
         end
 
-        it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+        it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
           obj = klass.create(title: 'Old title')
 
           travel 1.hour do
@@ -1910,20 +1910,20 @@ describe Dynamoid::Persistence do
             obj.title = 'New title'
             obj.save
 
-            expect(obj.updated_at.to_i).to eql(time_now.to_i)
+            expect(obj.updated.to_i).to eql(time_now.to_i)
           end
         end
 
-        it 'uses provided value updated_at if Config.timestamps=true', config: { timestamps: true } do
+        it 'uses provided value updated if Config.timestamps=true', config: { timestamps: true } do
           obj = klass.create(title: 'Old title')
 
           travel 1.hour do
-            updated_at = Time.now
+            updated = Time.now
             obj.title = 'New title'
-            obj.updated_at = updated_at
+            obj.updated = updated
             obj.save
 
-            expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+            expect(obj.updated.to_i).to eql(updated.to_i)
           end
         end
 
@@ -1958,7 +1958,7 @@ describe Dynamoid::Persistence do
           obj.save
 
           # doesn't contain :age key
-          expect(raw_attributes(obj).keys).to contain_exactly(:id, :created_at, :updated_at)
+          expect(raw_attributes(obj).keys).to contain_exactly(:id, :created, :updated)
         end
       end
 
@@ -1968,22 +1968,22 @@ describe Dynamoid::Persistence do
           obj.save
 
           # doesn't contain :age key
-          expect(raw_attributes(obj).keys).to contain_exactly(:id, :created_at, :updated_at)
+          expect(raw_attributes(obj).keys).to contain_exactly(:id, :created, :updated)
         end
       end
     end
 
     context 'when `touch: false` option passed' do
-      it 'does not update updated_at attribute' do
+      it 'does not update updated attribute' do
         obj = klass.create!
-        updated_at = obj.updated_at
+        updated = obj.updated
 
         travel 1.minute do
           obj.name = 'foo'
           obj.save(touch: false)
         end
 
-        expect(obj.updated_at).to eq updated_at
+        expect(obj.updated).to eq updated
       end
     end
   end
@@ -2009,25 +2009,25 @@ describe Dynamoid::Persistence do
         end
       end
 
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
           time_now = Time.now
           obj.update_attribute(:title, 'New title')
 
-          expect(obj.updated_at.to_i).to eql(time_now.to_i)
+          expect(obj.updated.to_i).to eql(time_now.to_i)
         end
       end
 
-      it 'uses provided value updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
-          updated_at = Time.now
-          obj.update_attribute(:updated_at, updated_at)
+          updated = Time.now
+          obj.update_attribute(:updated, updated)
 
-          expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+          expect(obj.updated.to_i).to eql(updated.to_i)
         end
       end
 
@@ -2113,25 +2113,25 @@ describe Dynamoid::Persistence do
         end
       end
 
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
           time_now = Time.now
           obj.update_attributes(title: 'New title')
 
-          expect(obj.updated_at.to_i).to eql(time_now.to_i)
+          expect(obj.updated.to_i).to eql(time_now.to_i)
         end
       end
 
-      it 'uses provided value updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
-          updated_at = Time.now
-          obj.update_attributes(updated_at: updated_at, title: 'New title')
+          updated = Time.now
+          obj.update_attributes(updated: updated, title: 'New title')
 
-          expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+          expect(obj.updated.to_i).to eql(updated.to_i)
         end
       end
 
@@ -2222,25 +2222,25 @@ describe Dynamoid::Persistence do
         end
       end
 
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
           time_now = Time.now
           obj.update_attributes!(title: 'New title')
 
-          expect(obj.updated_at.to_i).to eql(time_now.to_i)
+          expect(obj.updated.to_i).to eql(time_now.to_i)
         end
       end
 
-      it 'uses provided value updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
-          updated_at = Time.now
-          obj.update_attributes!(updated_at: updated_at, title: 'New title')
+          updated = Time.now
+          obj.update_attributes!(updated: updated, title: 'New title')
 
-          expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+          expect(obj.updated.to_i).to eql(updated.to_i)
         end
       end
 
@@ -2522,7 +2522,7 @@ describe Dynamoid::Persistence do
         end
       end
 
-      it 'sets updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
@@ -2530,22 +2530,22 @@ describe Dynamoid::Persistence do
 
           expect {
             obj.update { |d| d.set(title: 'New title') }
-          }.to change { obj.reload.updated_at.to_i }.to(time_now.to_i)
+          }.to change { obj.reload.updated.to_i }.to(time_now.to_i)
         end
       end
 
-      it 'uses provided value of updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided value of updated if Config.timestamps=true', config: { timestamps: true } do
         obj = klass.create(title: 'Old title')
 
         travel 1.hour do
-          updated_at = Time.now + 1.hour
+          updated = Time.now + 1.hour
 
           expect {
             obj.update do |d|
               d.set(title: 'New title')
-              d.set(updated_at: updated_at.to_i)
+              d.set(updated: updated.to_i)
             end
-          }.to change { obj.reload.updated_at.to_i }.to(updated_at.to_i)
+          }.to change { obj.reload.updated.to_i }.to(updated.to_i)
         end
       end
 
@@ -2860,23 +2860,23 @@ describe Dynamoid::Persistence do
         klass.create_table
       end
 
-      it 'sets created_at and updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'sets created and updated if Config.timestamps=true', config: { timestamps: true } do
         travel 1.hour do
           time_now = Time.now
           obj, = klass.import([{}])
 
-          expect(obj.created_at.to_i).to eql(time_now.to_i)
-          expect(obj.updated_at.to_i).to eql(time_now.to_i)
+          expect(obj.created.to_i).to eql(time_now.to_i)
+          expect(obj.updated.to_i).to eql(time_now.to_i)
         end
       end
 
-      it 'uses provided values of created_at and updated_at if Config.timestamps=true', config: { timestamps: true } do
+      it 'uses provided values of created and updated if Config.timestamps=true', config: { timestamps: true } do
         travel 1.hour do
-          created_at = updated_at = Time.now
-          obj, = klass.import([{ created_at: created_at, updated_at: updated_at }])
+          created = updated = Time.now
+          obj, = klass.import([{ created: created, updated: updated }])
 
-          expect(obj.created_at.to_i).to eql(created_at.to_i)
-          expect(obj.updated_at.to_i).to eql(updated_at.to_i)
+          expect(obj.created.to_i).to eql(created.to_i)
+          expect(obj.updated.to_i).to eql(updated.to_i)
         end
       end
 

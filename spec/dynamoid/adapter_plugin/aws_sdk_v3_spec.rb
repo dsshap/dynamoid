@@ -626,7 +626,7 @@ describe Dynamoid::AdapterPlugin::AwsSdkV3 do
   context 'without a preexisting table' do
     # CreateTable and DeleteTable
     it 'performs CreateTable and DeleteTable' do
-      table = Dynamoid.adapter.create_table('CreateTable', :id, range_key: { created_at: :number })
+      table = Dynamoid.adapter.create_table('CreateTable', :id, range_key: { created: :number })
 
       expect(Dynamoid.adapter.list_tables).to include 'CreateTable'
 

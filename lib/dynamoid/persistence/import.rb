@@ -35,8 +35,8 @@ module Dynamoid
 
         if @model_class.timestamps_enabled?
           time_now = DateTime.now.in_time_zone(Time.zone)
-          attrs[:created_at] ||= time_now
-          attrs[:updated_at] ||= time_now
+          attrs[:created] ||= time_now
+          attrs[:updated] ||= time_now
         end
 
         @model_class.build(attrs).tap do |model|

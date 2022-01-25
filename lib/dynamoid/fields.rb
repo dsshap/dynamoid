@@ -19,7 +19,7 @@ module Dynamoid
       serialized
     ].freeze
 
-    # Initialize the attributes we know the class has, in addition to our magic attributes: id, created_at, and updated_at.
+    # Initialize the attributes we know the class has, in addition to our magic attributes: id, created, and updated.
     included do
       class_attribute :attributes, instance_accessor: false
       class_attribute :range_key
@@ -28,8 +28,8 @@ module Dynamoid
 
       # Timestamp fields could be disabled later in `table` method call.
       # So let's declare them here and remove them later if it will be necessary
-      field :created_at, :datetime if Dynamoid::Config.timestamps
-      field :updated_at, :datetime if Dynamoid::Config.timestamps
+      field :created, :datetime if Dynamoid::Config.timestamps
+      field :updated, :datetime if Dynamoid::Config.timestamps
 
       field :id # Default primary key
     end
@@ -188,7 +188,7 @@ module Dynamoid
       # * table name is based on a model class e.g. +users+ for +User+ class
       # * hash key name - +id+ by default
       # * hash key type - +string+ by default
-      # * generating timestamp fields +created_at+ and +updated_at+
+      # * generating timestamp fields +created+ and +updated+
       # * billing mode and read/write capacity units
       #
       # The +table+ method can be used to override the defaults:
@@ -215,7 +215,7 @@ module Dynamoid
       # @option options [Symbol] :capacity_mode table billing mode - either +provisioned+ or +on_demand+
       # @option options [Integer] :write_capacity table write capacity units
       # @option options [Integer] :read_capacity table read capacity units
-      # @option options [true|false] :timestamps whether generate +created_at+ and +updated_at+ fields or not
+      # @option options [true|false] :timestamps whether generate +created+ and +updated+ fields or not
       # @option options [Hash] :expires set up a table TTL and should have following structure +{ field: <attriubute name>, after: <seconds> }+
       #
       # @since 0.4.0
@@ -229,13 +229,13 @@ module Dynamoid
         if options[:timestamps] && !Dynamoid::Config.timestamps
           # Timestamp fields weren't declared in `included` hook because they
           # are disabled globaly
-          field :created_at, :datetime
-          field :updated_at, :datetime
+          field :created, :datetime
+          field :updated, :datetime
         elsif options[:timestamps] == false && Dynamoid::Config.timestamps
           # Timestamp fields were declared in `included` hook but they are
           # disabled for a table
-          remove_field :created_at
-          remove_field :updated_at
+          remove_field :created
+          remove_field :updated
         end
       end
 
@@ -357,20 +357,20 @@ module Dynamoid
 
     private
 
-    # Automatically called during the created callback to set the created_at time.
+    # Automatically called during the created callback to set the created time.
     #
     # @since 0.2.0
-    def set_created_at
-      self.created_at ||= DateTime.now.in_time_zone(Time.zone) if self.class.timestamps_enabled?
+    def set_created
+      self.created ||= DateTime.now.in_time_zone(Time.zone) if self.class.timestamps_enabled?
     end
 
-    # Automatically called during the save callback to set the updated_at time.
+    # Automatically called during the save callback to set the updated time.
     #
     # @since 0.2.0
-    def set_updated_at
+    def set_updated
       # @_touch_record=false means explicit disabling
-      if self.class.timestamps_enabled? && changed? && !updated_at_changed? && @_touch_record != false
-        self.updated_at = DateTime.now.in_time_zone(Time.zone)
+      if self.class.timestamps_enabled? && changed? && !updated_changed? && @_touch_record != false
+        self.updated = DateTime.now.in_time_zone(Time.zone)
       end
     end
 

@@ -26,8 +26,8 @@ module Dynamoid
       # The full example with all the options being specified:
       #
       #   global_secondary_index hash_key: :category,
-      #                          range_key: :created_at,
-      #                          name: 'posts_category_created_at_index',
+      #                          range_key: :created,
+      #                          name: 'posts_category_created_index',
       #                          projected_attributes: :all,
       #                          read_capacity: 100,
       #                          write_capacity: 20
@@ -83,7 +83,7 @@ module Dynamoid
       #     include Dynamoid::Document
       #
       #     table hash_key: :post_id
-      #     range :created_at, :datetime
+      #     range :created, :datetime
       #     field :author_id
       #
       #     local_secondary_index range_key: :author_id
@@ -91,8 +91,8 @@ module Dynamoid
       #
       # The full example with all the options being specified:
       #
-      #   local_secondary_index range_key: :created_at,
-      #                         name: 'posts_created_at_index',
+      #   local_secondary_index range_key: :created,
+      #                         name: 'posts_created_index',
       #                         projected_attributes: :all
       #
       # Local secondary index should be declared after fields for mentioned

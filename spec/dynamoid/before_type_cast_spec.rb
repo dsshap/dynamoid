@@ -101,8 +101,8 @@ RSpec.describe 'Before type cast' do
       expect(obj).to respond_to(:first_name_before_type_cast)
       expect(obj).to respond_to(:last_name_before_type_cast)
       expect(obj).to respond_to(:admin)
-      expect(obj).to respond_to(:created_at)
-      expect(obj).to respond_to(:updated_at)
+      expect(obj).to respond_to(:created)
+      expect(obj).to respond_to(:updated)
     end
 
     it 'returns attribute original value' do

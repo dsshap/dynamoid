@@ -106,18 +106,18 @@ describe Dynamoid::Dirty do
 
   describe 'previous_changes' do
     it 'returns a hash of attributes that were changed before the model was saved' do
-      obj = model.create(name: 'Alex', updated_at: '2019-07-20 00:53:32'.to_datetime)
+      obj = model.create(name: 'Alex', updated: '2019-07-20 00:53:32'.to_datetime)
       obj.name = 'Bob'
-      obj.updated_at = '2019-07-20 20:11:01'.to_datetime
+      obj.updated = '2019-07-20 20:11:01'.to_datetime
       obj.save
 
       expect(obj.previous_changes).to eq(
         'name' => %w[Alex Bob],
-        'updated_at' => ['2019-07-20 00:53:32'.to_datetime, '2019-07-20 20:11:01'.to_datetime]
+        'updated' => ['2019-07-20 00:53:32'.to_datetime, '2019-07-20 20:11:01'.to_datetime]
       )
 
       obj = model.create(name: 'Alex')
-      # there are also changes for `created_at` and `updated_at` - just don't check them
+      # there are also changes for `created` and `updated` - just don't check them
       expect(obj.previous_changes).to include('id' => [nil, obj.id], 'name' => [nil, 'Alex'])
     end
 

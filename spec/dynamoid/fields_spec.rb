@@ -220,8 +220,8 @@ describe Dynamoid::Fields do
 
     it 'returns all attributes' do
       expect(Address.attributes).to eq(id: { type: :string },
-                                       created_at: { type: :datetime },
-                                       updated_at: { type: :datetime },
+                                       created: { type: :datetime },
+                                       updated: { type: :datetime },
                                        city: { type: :string },
                                        options: { type: :serialized },
                                        deliverable: { type: :boolean },

@@ -21,8 +21,8 @@ describe Dynamoid::Document do
     address = Address.new
     expect(address).to respond_to(:id_will_change!)
     expect(address).to respond_to(:options_will_change!)
-    expect(address).to respond_to(:created_at_will_change!)
-    expect(address).to respond_to(:updated_at_will_change!)
+    expect(address).to respond_to(:created_will_change!)
+    expect(address).to respond_to(:updated_will_change!)
   end
 
   it 'initializes a new document with attributes' do
@@ -379,7 +379,7 @@ describe Dynamoid::Document do
     end
   end
 
-  describe 'timestamps fields `created_at` and `updated_at`' do
+  describe 'timestamps fields `created` and `updated`' do
     let(:class_with_timestamps_true) do
       new_class do
         table timestamps: true
@@ -393,35 +393,35 @@ describe Dynamoid::Document do
     end
 
     it 'declares timestamps when Dynamoid::Config.timestamps = true', config: { timestamps: true } do
-      expect(new_class.attributes).to have_key(:created_at)
-      expect(new_class.attributes).to have_key(:updated_at)
+      expect(new_class.attributes).to have_key(:created)
+      expect(new_class.attributes).to have_key(:updated)
 
-      expect(new_class.new).to respond_to(:created_at)
-      expect(new_class.new).to respond_to(:updated_at)
+      expect(new_class.new).to respond_to(:created)
+      expect(new_class.new).to respond_to(:updated)
     end
 
     it 'does not declare timestamps when Dynamoid::Config.timestamps = false', config: { timestamps: false } do
-      expect(new_class.attributes).not_to have_key(:created_at)
-      expect(new_class.attributes).not_to have_key(:updated_at)
+      expect(new_class.attributes).not_to have_key(:created)
+      expect(new_class.attributes).not_to have_key(:updated)
 
-      expect(new_class.new).not_to respond_to(:created_at)
-      expect(new_class.new).not_to respond_to(:updated_at)
+      expect(new_class.new).not_to respond_to(:created)
+      expect(new_class.new).not_to respond_to(:updated)
     end
 
     it 'does not declare timestamps when Dynamoid::Config.timestamps = true but table timestamps = false', config: { timestamps: true } do
-      expect(class_with_timestamps_false.attributes).not_to have_key(:created_at)
-      expect(class_with_timestamps_false.attributes).not_to have_key(:updated_at)
+      expect(class_with_timestamps_false.attributes).not_to have_key(:created)
+      expect(class_with_timestamps_false.attributes).not_to have_key(:updated)
 
-      expect(class_with_timestamps_false.new).not_to respond_to(:created_at)
-      expect(class_with_timestamps_false.new).not_to respond_to(:updated_at)
+      expect(class_with_timestamps_false.new).not_to respond_to(:created)
+      expect(class_with_timestamps_false.new).not_to respond_to(:updated)
     end
 
     it 'declares timestamps when Dynamoid::Config.timestamps = false but table timestamps = true', config: { timestamps: false } do
-      expect(class_with_timestamps_true.attributes).to have_key(:created_at)
-      expect(class_with_timestamps_true.attributes).to have_key(:updated_at)
+      expect(class_with_timestamps_true.attributes).to have_key(:created)
+      expect(class_with_timestamps_true.attributes).to have_key(:updated)
 
-      expect(class_with_timestamps_true.new).to respond_to(:created_at)
-      expect(class_with_timestamps_true.new).to respond_to(:updated_at)
+      expect(class_with_timestamps_true.new).to respond_to(:created)
+      expect(class_with_timestamps_true.new).to respond_to(:updated)
     end
   end
 end

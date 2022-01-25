@@ -192,7 +192,7 @@ table timestamps: false
 ```
 
 This option controls generation of timestamp fields
-`created_at`/`updated_at`.
+`created`/`updated`.
 
 It's also possible to override table capacity mode configured globally
 with table level option `capacity_mode`. Valid values are
@@ -338,8 +338,8 @@ end
 
 #### Magic Columns
 
-You get magic columns of `id` (`string`), `created_at` (`datetime`), and
-`updated_at` (`datetime`) for free.
+You get magic columns of `id` (`string`), `created` (`datetime`), and
+`updated` (`datetime`) for free.
 
 ```ruby
 class User
@@ -877,7 +877,7 @@ user = User.project(:name).first
 
 user.id         # => nil
 user.name       # => 'Alex'
-user.created_at # => nil
+user.created # => nil
 ```
 
 Returned models with have filled specified fields only.
@@ -885,7 +885,7 @@ Returned models with have filled specified fields only.
 Several fields could be specified:
 
 ```ruby
-user = User.project(:name, :created_at)
+user = User.project(:name, :created)
 ```
 
 ### Consistent Reads
@@ -908,8 +908,8 @@ If you have a range index, Dynamoid provides a number of additional
 other convenience methods to make your life a little easier:
 
 ```ruby
-User.where("created_at.gt": DateTime.now - 1.day).all
-User.where("created_at.lt": DateTime.now - 1.day).all
+User.where("created.gt": DateTime.now - 1.day).all
+User.where("created.lt": DateTime.now - 1.day).all
 ```
 
 It also supports `gte` and `lte`. Turning those into symbols and
@@ -1072,7 +1072,7 @@ Listed below are all configuration options.
   keeping every loaded object in a map. Looks up objects using the map
   when referring to them. Isn't thread safe. Default is `false`.
   `Use Dynamoid::Middleware::IdentityMap` to clear identity map for each HTTP request
-* `timestamps` - by default Dynamoid sets `created_at` and `updated_at`
+* `timestamps` - by default Dynamoid sets `created` and `updated`
   fields for model creation and updating. You can disable this
   behavior by setting `false` value
 * `sync_retry_max_times` - when Dynamoid creates or deletes table
@@ -1291,9 +1291,9 @@ Dynamoid.config.endpoint = 'http://localhost:8000'
 
 User.create(name: 'Alex')
 
-# => D, [2019-05-12T20:01:07.840051 #75059] DEBUG -- : put_item | Request "{\"TableName\":\"dynamoid_users\",\"Item\":{\"created_at\":{\"N\":\"1557680467.608749\"},\"updated_at\":{\"N\":\"1557680467.608809\"},\"id\":{\"S\":\"1227eea7-2c96-4b8a-90d9-77b38eb85cd0\"}},\"Expected\":{\"id\":{\"Exists\":false}}}" | Response "{}"
+# => D, [2019-05-12T20:01:07.840051 #75059] DEBUG -- : put_item | Request "{\"TableName\":\"dynamoid_users\",\"Item\":{\"created\":{\"N\":\"1557680467.608749\"},\"updated\":{\"N\":\"1557680467.608809\"},\"id\":{\"S\":\"1227eea7-2c96-4b8a-90d9-77b38eb85cd0\"}},\"Expected\":{\"id\":{\"Exists\":false}}}" | Response "{}"
 
-# => D, [2019-05-12T20:01:07.842397 #75059] DEBUG -- : (231.28 ms) PUT ITEM - ["dynamoid_users", {:created_at=>0.1557680467608749e10, :updated_at=>0.1557680467608809e10, :id=>"1227eea7-2c96-4b8a-90d9-77b38eb85cd0", :User=>nil}, {}]
+# => D, [2019-05-12T20:01:07.842397 #75059] DEBUG -- : (231.28 ms) PUT ITEM - ["dynamoid_users", {:created=>0.1557680467608749e10, :updated=>0.1557680467608809e10, :id=>"1227eea7-2c96-4b8a-90d9-77b38eb85cd0", :User=>nil}, {}]
 ```
 
 The first line is a body of HTTP request and response. The second line -

@@ -24,7 +24,7 @@ RSpec.describe 'STI' do
     end
 
     it 'enables only own attributes in a base class ' do
-      expect(class_a.attributes.keys).to match_array(%i[id type a created_at updated_at])
+      expect(class_a.attributes.keys).to match_array(%i[id type a created updated])
     end
 
     it 'enabled only own attributes and inherited in a child class' do

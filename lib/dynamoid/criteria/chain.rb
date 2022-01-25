@@ -35,7 +35,7 @@ module Dynamoid
       # A key could be either string or symbol.
       #
       # In order to express conditions other than equality predicates could be used.
-      # Predicate should be added to an attribute name to form a key +'created_at.gt' => Date.yesterday+
+      # Predicate should be added to an attribute name to form a key +'created.gt' => Date.yesterday+
       #
       # Currently supported following predicates:
       # - +gt+ - greater than
@@ -59,7 +59,7 @@ module Dynamoid
       #   Post.where('size.lt' => 35000)
       #   Post.where('size.lte' => 35000)
       #   Post.where('author.ne' => 'John Doe')
-      #   Post.where('created_at.between' => [Time.now - 3600, Time.now])
+      #   Post.where('created.between' => [Time.now - 3600, Time.now])
       #   Post.where('category.in' => ['tech', 'fashion'])
       #   Post.where('title.begins_with' => 'How long')
       #   Post.where('tags.contains' => 'Ruby')
@@ -452,7 +452,7 @@ module Dynamoid
       # these fields set.
       #
       #   Post.where('views_count.gt' => 1000).select(:title)
-      #   Post.where('views_count.gt' => 1000).select(:title, :created_at)
+      #   Post.where('views_count.gt' => 1000).select(:title, :created)
       #   Post.select(:id)
       #
       # It can be used to avoid loading large field values and to decrease a

@@ -96,69 +96,69 @@ describe 'Type casting' do
   describe 'DateTime field' do
     let(:klass) do
       new_class do
-        field :created_at, :datetime
+        field :created, :datetime
       end
     end
 
     it 'converts Date, DateTime and Time to DateTime' do
-      obj = klass.new(created_at: Date.new(2018, 7, 21))
-      expect(obj.created_at).to eql(DateTime.new(2018, 7, 21, 0, 0, 0, '+0'))
+      obj = klass.new(created: Date.new(2018, 7, 21))
+      expect(obj.created).to eql(DateTime.new(2018, 7, 21, 0, 0, 0, '+0'))
 
       datetime = DateTime.new(2018, 7, 21, 8, 40, 15, '+7')
-      obj = klass.new(created_at: datetime)
-      expect(obj.created_at).to eql(datetime)
+      obj = klass.new(created: datetime)
+      expect(obj.created).to eql(datetime)
 
-      obj = klass.new(created_at: Time.new(2007, 11, 1, 15, 25, 0, '+09:00'))
-      expect(obj.created_at).to eql(DateTime.new(2007, 11, 1, 15, 25, 0, '+09:00'))
+      obj = klass.new(created: Time.new(2007, 11, 1, 15, 25, 0, '+09:00'))
+      expect(obj.created).to eql(DateTime.new(2007, 11, 1, 15, 25, 0, '+09:00'))
     end
 
     it 'converts string with well formatted date or datetime to DateTime', config: { application_timezone: :utc } do
-      obj = klass.new(created_at: '2018-08-21')
-      expect(obj.created_at).to eql(DateTime.new(2018, 8, 21, 0, 0, 0, '+00:00'))
+      obj = klass.new(created: '2018-08-21')
+      expect(obj.created).to eql(DateTime.new(2018, 8, 21, 0, 0, 0, '+00:00'))
 
-      obj = klass.new(created_at: '2018-08-21T21:55:30+01:00')
-      expect(obj.created_at).to eql(DateTime.new(2018, 8, 21, 21, 55, 30, '+1'))
+      obj = klass.new(created: '2018-08-21T21:55:30+01:00')
+      expect(obj.created).to eql(DateTime.new(2018, 8, 21, 21, 55, 30, '+1'))
     end
 
     it 'preserves time zone specified in a string', config: { application_timezone: 'Hawaii' } do
-      obj = klass.new(created_at: '2018-08-21T21:55:30+01:00')
-      expect(obj.created_at).to eql(DateTime.new(2018, 8, 21, 21, 55, 30, '+1'))
+      obj = klass.new(created: '2018-08-21T21:55:30+01:00')
+      expect(obj.created).to eql(DateTime.new(2018, 8, 21, 21, 55, 30, '+1'))
     end
 
     it 'uses config.application_timezone if time zone is not specified in a string', config: { application_timezone: 'Hawaii' } do
-      obj = klass.new(created_at: '2018-08-21T21:55:30')
-      expect(obj.created_at).to eql(DateTime.new(2018, 8, 21, 21, 55, 30, '-10:00'))
+      obj = klass.new(created: '2018-08-21T21:55:30')
+      expect(obj.created).to eql(DateTime.new(2018, 8, 21, 21, 55, 30, '-10:00'))
     end
 
     it 'converts string with not well formatted date or datetime to nil' do
-      obj = klass.new(created_at: '')
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: '')
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: '  ')
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: '  ')
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: 'abc')
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: 'abc')
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: '2018-08')
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: '2018-08')
+      expect(obj.created).to eql(nil)
     end
 
     it 'converts any random object to nil' do
-      obj = klass.new(created_at: nil)
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: nil)
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: :abc)
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: :abc)
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: [])
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: [])
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: {})
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: {})
+      expect(obj.created).to eql(nil)
 
-      obj = klass.new(created_at: true)
-      expect(obj.created_at).to eql(nil)
+      obj = klass.new(created: true)
+      expect(obj.created).to eql(nil)
     end
   end
 
