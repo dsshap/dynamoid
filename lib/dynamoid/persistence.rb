@@ -602,7 +602,7 @@ module Dynamoid
             t.add(lock_version: 1) if self.class.attributes[:lock_version]
 
             if Dynamoid::Config.timestamps
-              time_now = DateTime.now.in_time_zone(Time.zone)
+              time_now = DateTime.now.in_time_zone(Time.zone).utc.iso8601
               time_now_dumped = Dumping.dump_field(time_now, self.class.attributes[:updated])
               t.set(updated: time_now_dumped)
             end

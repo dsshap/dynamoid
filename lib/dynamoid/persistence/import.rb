@@ -34,7 +34,7 @@ module Dynamoid
         attrs = attributes.symbolize_keys
 
         if @model_class.timestamps_enabled?
-          time_now = DateTime.now.in_time_zone(Time.zone)
+          time_now = DateTime.now.in_time_zone(Time.zone).utc.iso8601
           attrs[:created] ||= time_now
           attrs[:updated] ||= time_now
         end

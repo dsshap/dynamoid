@@ -28,8 +28,8 @@ module Dynamoid
 
       # Timestamp fields could be disabled later in `table` method call.
       # So let's declare them here and remove them later if it will be necessary
-      field :created, :datetime if Dynamoid::Config.timestamps
-      field :updated, :datetime if Dynamoid::Config.timestamps
+      field :created, :string if Dynamoid::Config.timestamps
+      field :updated, :string if Dynamoid::Config.timestamps
 
       field :id # Default primary key
     end
@@ -361,7 +361,7 @@ module Dynamoid
     #
     # @since 0.2.0
     def set_created
-      self.created ||= DateTime.now.in_time_zone(Time.zone) if self.class.timestamps_enabled?
+      self.created ||= DateTime.now.in_time_zone(Time.zone).utc.iso8601 if self.class.timestamps_enabled?
     end
 
     # Automatically called during the save callback to set the updated time.
@@ -370,7 +370,7 @@ module Dynamoid
     def set_updated
       # @_touch_record=false means explicit disabling
       if self.class.timestamps_enabled? && changed? && !updated_changed? && @_touch_record != false
-        self.updated = DateTime.now.in_time_zone(Time.zone)
+        self.updated = DateTime.now.in_time_zone(Time.zone).utc.iso8601
       end
     end
 
